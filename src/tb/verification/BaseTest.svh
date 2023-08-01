@@ -24,7 +24,7 @@ class BaseTest#(string NAME = "Test");
 
 	
 	// Method: Read Request sequences. Use in spec test
-	function void readReqSequence(string path, RequestTransaction reqs[$]);
+	function void readReqSequence(string path, ref RequestTransaction reqs[$]);
 		int fd;
 		string line, addr, data, cmd;
 		RequestTransaction req = new(0,0,0);
@@ -52,11 +52,12 @@ class BaseTest#(string NAME = "Test");
 			end
 			
 			$fclose(fd);
+
 		end
 	endfunction
 	
 	// Method: Read Response sequences. Use in spec test
-	function void readRespSequence(string path, RespDataTransaction resps[$]);
+	function void readRespSequence(string path, ref RespDataTransaction resps[$]);
 		int fd;
 		string line, data;
 		RespDataTransaction resp = new(0);
@@ -92,10 +93,10 @@ class BaseTest#(string NAME = "Test");
 		environment0.agentMaster0.setSequence(sequence_m0);		
 		environment0.agentMaster1.setSequence(sequence_m1);
 		
-		environment0.scoreboard.refMonitorReqFifo0  = ref_sequence_m0;
-		environment0.scoreboard.refMonitorReqFifo1  = ref_sequence_m1;
-		environment0.scoreboard.refMonitorRespFifo0 = ref_sequence_s0;
-		environment0.scoreboard.refMonitorRespFifo1 = ref_sequence_s1;
+		environment0.scoreboard0.refMonitorReqFifo0  = ref_sequence_m0;
+		environment0.scoreboard0.refMonitorReqFifo1  = ref_sequence_m1;
+		environment0.scoreboard0.refMonitorRespFifo0 = ref_sequence_s0;
+		environment0.scoreboard0.refMonitorRespFifo1 = ref_sequence_s1;
 				
 		$display("T=%0t Test %s is starting...", $time, NAME);
 		environment0.run();

@@ -9,13 +9,13 @@ module arbiter#(
 	
 	cross_bar_if.master  m_base,
 	
-	rd_req_if.slave      rd_req_port [$clog2(MATSER_NUM) - 1 : 0],
-	wr_req_if.in         wr_req_port [$clog2(MATSER_NUM) - 1 : 0],
+	rd_req_if.slave      rd_req_port [MATSER_NUM - 1 : 0],
+	wr_req_if.in         wr_req_port [MATSER_NUM - 1 : 0],
 	rd_if.out            resp_port0,
 	rd_if.out            resp_port1
 );
 		
-	rd_req_if#(AWIDTH, MATSER_NUM) rd_req_bus [$clog2(MATSER_NUM) - 1 : 0]();
+	rd_req_if#(AWIDTH, MATSER_NUM) rd_req_bus [MATSER_NUM - 1 : 0]();
 	
 	generate
 		for (genvar i = 0; i < MATSER_NUM; i++)

@@ -6,8 +6,8 @@ module arbiter_controller#(
 
 	cross_bar_if.master  m_base,
 		
-	rd_req_if.slave      rd_req_port [$clog2(MATSER_NUM) - 1 : 0],
-	wr_req_if.in         wr_req_port [$clog2(MATSER_NUM) - 1 : 0],
+	rd_req_if.slave      rd_req_port [MATSER_NUM - 1 : 0],
+	wr_req_if.in         wr_req_port [MATSER_NUM - 1 : 0],
 	rd_if.out            resp_port0,
 	rd_if.out            resp_port1
 );
@@ -111,6 +111,20 @@ module arbiter_controller#(
 	* Base Master Port 0 control
 	*/	
 	
+	// Read FIFO 0
+	always_ff@(posedge aclk)
+		if (!aresetn | state != SET_RD_REQ0)
+			rd_req_port[0].rd_en <= 0;
+		else 
+			rd_req_port[0].rd_en <= 1;
+			
+	// Read FIFO 1
+	always_ff@(posedge aclk)
+		if (!aresetn | state != SET_RD_REQ1)
+			rd_req_port[1].rd_en <= 0;
+		else 
+			rd_req_port[1].rd_en <= 1;
+			
 
 	// REQ control
 	always_ff@(posedge aclk)
@@ -183,8 +197,8 @@ module arbiter_controller#(
 			resp_port0.rdata <= '0;
 			resp_port0.resp  <= 0;
 		end else begin
-			resp_port0.rdata <= cross_bar_if.rdata;
-			resp_port0.resp  <= cross_bar_if.resp;
+			resp_port0.rdata <= m_base.rdata;
+			resp_port0.resp  <= m_base.resp;
 		end
 			
 			
@@ -193,7 +207,7 @@ module arbiter_controller#(
 		if (!aresetn & state != WAIT_ACK0) begin
 			resp_port0.ack <= 0;
 		end else 
-			resp_port0.ack <= cross_bar_if.ack;
+			resp_port0.ack <= m_base.ack;
 			
 			
 	/*****************************************************
@@ -206,8 +220,8 @@ module arbiter_controller#(
 			resp_port1.rdata <= '0;
 			resp_port1.resp  <= 0;
 		end else begin
-			resp_port1.rdata <= cross_bar_if.rdata;
-			resp_port1.resp  <= cross_bar_if.resp;
+			resp_port1.rdata <= m_base.rdata;
+			resp_port1.resp  <= m_base.resp;
 		end
 			
 			
@@ -216,6 +230,6 @@ module arbiter_controller#(
 		if (!aresetn & state != WAIT_ACK1) begin
 			resp_port1.ack <= 0;
 		end else 
-			resp_port1.ack <= cross_bar_if.ack;			
+			resp_port1.ack <= m_base.ack;			
 			
 endmodule

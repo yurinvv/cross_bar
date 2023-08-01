@@ -71,7 +71,8 @@ module port_handler#(
 	// REQ Reg0 and Decoder implementations
 	always_ff @(posedge aclk)
 		if (!aresetn | base_port.cmd != READ_OPP) begin
-			rd_req_port.masterReset();
+			rd_req_port.wren <= 0;
+			rd_req_port.addr <= '0;
 		end else begin
 			rd_req_port.wren[0] <= !base_port.addr[AWIDTH - 1]; //Master 0
 			rd_req_port.wren[1] <= base_port.addr[AWIDTH - 1];  //Master 1
@@ -87,7 +88,10 @@ module port_handler#(
 	// REQ Reg1 and Decoder implementations
 	always_ff @(posedge aclk)
 		if (!aresetn | base_port.cmd != WRITE_OPP) begin
-			wr_req_port.busReset();
+			wr_req_port.sel   <= '0;
+			wr_req_port.addr  <= '0;
+			wr_req_port.wdata <= '0;
+			wr_req_port.req   <= '0;
 		end else begin
 			wr_req_port.sel   <= base_port.addr[AWIDTH - 1 : AWIDTH - $clog2(MATSER_NUM)];
 			wr_req_port.addr  <= base_port.addr;

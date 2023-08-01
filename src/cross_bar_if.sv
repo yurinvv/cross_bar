@@ -1,9 +1,9 @@
 interface cross_bar_if#(
-	parameter DWIDTH = 32,
-	parameter AWIDTH = 32
+	parameter AWIDTH = 32,
+	parameter DWIDTH = 32
 )(
-	 input aclk
-	,input aresetn
+	 input aclk,
+	 input aresetn
 );
 	
 	logic                  req;   // Request transaction execution. 1 - Active state
@@ -34,6 +34,50 @@ interface cross_bar_if#(
 		,input  resp
 	);
 	
+	task mastertInit();
+		@(posedge aclk);
+		{cmd, addr, wdata, req} <= '0;
+	endtask
 	
+	task sendRequest(input [AWIDTH - 1 : 0] addr_val, input [DWIDTH - 1 : 0] data_val, input cmd_val);
+		@(posedge aclk);
+		cmd  <= cmd_val;
+		addr <= addr_val;
+		wdata <= data_val;
+		req  <= 1;
+		wait(ack);
+		@(posedge aclk);
+		{cmd, addr, wdata, req} <= '0;
+	endtask
+	
+	task getRequest(output [AWIDTH - 1 : 0] addr_val, output [DWIDTH - 1 : 0] data_val, output cmd_val);
+		wait(req);
+		@(posedge aclk);
+		{addr_val, data_val, cmd_val} <= {addr, wdata, cmd};
+	endtask
+	
+	task sendAckRespRdata(input [DWIDTH - 1 : 0] data_val);
+		wait(req);
+		@(posedge aclk);
+		ack <= 1;
+		@(posedge aclk);
+		ack <= 0;
+		resp <= 1;
+		rdata <= data_val;
+		@(posedge aclk);
+		{resp, rdata} <= '0;
+	endtask
+	
+	
+	task getRespData(output bit [DWIDTH - 1 : 0] rdata_val);
+		wait(resp);
+		@(posedge aclk);
+		rdata_val <= rdata;
+	endtask
+	
+	task waitOnlyResp();
+		wait(resp);
+		@(posedge aclk);
+	endtask
 	
 endinterface

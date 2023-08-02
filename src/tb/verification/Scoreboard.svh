@@ -26,6 +26,8 @@ class Scoreboard;
 	int mReq1_fails;
 	
 	task run();
+		$display("T=%0t [Scoreboard] is starting...", $time);
+	
 		fork
 		checkMonitorReqFifo0();
 		checkMonitorReqFifo1();
@@ -37,6 +39,11 @@ class Scoreboard;
 			$display("##################################");
 			$display("####     TEST FAILED! :-(   ######");
 			$display("##################################");
+			$display("#### mResp0_fails = %d", mResp0_fails);
+			$display("#### mResp1_fails = %d", mResp1_fails);
+			$display("#### mReq0_fails = %d",  mReq0_fails);
+			$display("#### mReq1_fails = %d",  mReq1_fails);
+			
 		end else begin
 			$display("######################################");
 			$display("####    TEST PASSED!!! :-D      ######");
@@ -56,6 +63,10 @@ class Scoreboard;
 			monitorRespFifo0.get(respTmp0);
 			refRespTmp0 = refMonitorRespFifo0.pop_back();
 			
+			$display("+--------------------------------------");
+			$display("| respTmp0.data = %h; refRespTmp0.data = %h", respTmp0.data, refRespTmp0.data);
+			$display("+--------------------------------------");
+			
 			if (respTmp0.data != refRespTmp0.data) begin
 				mResp0_fails++;
 			end
@@ -73,6 +84,10 @@ class Scoreboard;
 			monitorRespFifo1.get(respTmp1);
 			refRespTmp1 = refMonitorRespFifo1.pop_back();
 			
+			$display("+--------------------------------------");
+			$display("| respTmp1.data = %h; refRespTmp1.data = %h", respTmp1.data, refRespTmp1.data);
+			$display("+--------------------------------------");
+			
 			if (respTmp1.data != refRespTmp1.data) begin
 				mResp1_fails++;
 			end
@@ -89,6 +104,12 @@ class Scoreboard;
 			mReq0_i++;
 			monitorReqFifo0.get(reqTmp0);
 			refReqTmp0 = refMonitorReqFifo0.pop_back();
+			
+//			$display("+--------------------------------------");
+//			$display("| reqTmp0.addr = %h; refReqTmp0.addr = %h", reqTmp0.addr, refReqTmp0.addr);
+//			$display("| reqTmp0.data = %h; refReqTmp0.data = %h", reqTmp0.data, refReqTmp0.data);
+//			$display("| reqTmp0.cmd = %h; refReqTmp0.cmd = %h", reqTmp0.cmd, refReqTmp0.cmd);
+//			$display("+--------------------------------------");
 			
 			if (reqTmp0.addr   != refReqTmp0.addr
 				| reqTmp0.data != refReqTmp0.data
@@ -109,6 +130,12 @@ class Scoreboard;
 			monitorReqFifo1.get(reqTmp1);
 			refReqTmp1 = refMonitorReqFifo1.pop_back();
 			
+//			$display("+--------------------------------------");
+//			$display("| reqTmp1.addr = %h; refReqTmp1.addr = %h", reqTmp1.addr, refReqTmp1.addr);
+//			$display("| reqTmp1.data = %h; refReqTmp1.data = %h", reqTmp1.data, refReqTmp1.data);
+//			$display("| reqTmp1.cmd = %h;  refReqTmp1.cmd = %h",  reqTmp1.cmd,  refReqTmp1.cmd);
+//			$display("+--------------------------------------");			
+//			
 			if (reqTmp1.addr   != refReqTmp1.addr
 				| reqTmp1.data != refReqTmp1.data
 				| reqTmp1.cmd  != refReqTmp1.cmd) begin

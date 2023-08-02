@@ -20,6 +20,7 @@ module arbiter_controller#(
                            rd_req_port[1].req,
                            wr_req_port[1].req};
 	
+	
 	/**********************
 	* FSM
 	*/
@@ -55,7 +56,7 @@ module arbiter_controller#(
 		next = state;
 		case(state)
 		IDLE:
-			next = state;
+			next = DETECT_REQ;
 			
 		DETECT_REQ:
 			if (any_requests)
@@ -74,8 +75,12 @@ module arbiter_controller#(
 			next = WAIT_ACK0;	
 
 		WAIT_ACK0:
-			if (m_base.ack)
-				next = RETURN_RESP0; 
+			if (m_base.ack) begin
+				if (m_base.cmd)
+					next = DETECT_REQ;
+				else
+					next = RETURN_RESP0; 
+			end
 				
 		RETURN_RESP0:
 			if (m_base.resp)
@@ -94,8 +99,12 @@ module arbiter_controller#(
 			next = WAIT_ACK1;
 			
 		WAIT_ACK1:
-			if (m_base.ack)
-				next = RETURN_RESP1; 
+			if (m_base.ack) begin
+				if (m_base.cmd)
+					next = DETECT_REQ;
+				else
+					next = RETURN_RESP0; 
+			end
 				
 		RETURN_RESP1:
 			if (m_base.resp)
@@ -106,25 +115,7 @@ module arbiter_controller#(
 	
 	/////////////////////////////
 	// State Implementations
-	
-	/*******************************************************
-	* Base Master Port 0 control
-	*/	
-	
-	// Read FIFO 0
-	always_ff@(posedge aclk)
-		if (!aresetn | state != SET_RD_REQ0)
-			rd_req_port[0].rd_en <= 0;
-		else 
-			rd_req_port[0].rd_en <= 1;
-			
-	// Read FIFO 1
-	always_ff@(posedge aclk)
-		if (!aresetn | state != SET_RD_REQ1)
-			rd_req_port[1].rd_en <= 0;
-		else 
-			rd_req_port[1].rd_en <= 1;
-			
+		
 
 	// REQ control
 	always_ff@(posedge aclk)
@@ -137,12 +128,13 @@ module arbiter_controller#(
 			
 				m_base.req <= 1;
 			default:
-				m_base.req <= 0;
+				if (m_base.ack)
+					m_base.req <= 0;
 			endcase
 	
 	// ADDR control
 	always_ff@(posedge aclk)
-		if (!aresetn) begin
+		if (!aresetn | m_base.ack) begin
 			m_base.addr <= '0;
 		end else 
 			case (state)
@@ -157,15 +149,12 @@ module arbiter_controller#(
 
 			SET_RD_REQ1:
 				m_base.addr <= rd_req_port[1].addr;	
-				
-			default:
-				m_base.addr <= '0;
 			endcase
 			
 
 	// CMD and WDATA control
 	always_ff@(posedge aclk)
-		if (!aresetn) begin
+		if (!aresetn | m_base.ack) begin
 			m_base.cmd   <= '0;
 			m_base.wdata <= '0;
 		end else 
@@ -180,24 +169,26 @@ module arbiter_controller#(
 				m_base.cmd   <= WRITE_OPP;
 				m_base.wdata <= wr_req_port[1].wdata;
 				end
-			default:
-				begin
-				m_base.cmd   <= READ_OPP;
-				m_base.wdata <= '0;
-				end
 			endcase
 	
 	/*******************************************************
 	* RD Port 0 control
 	*/
 	
+	//**
+	//logic [31 : 0] resp_port0_rdata;
+	
+	//assign resp_port0.rdata = resp_port0_rdata;
+	
 	// RD0.RDATA and RD0.RESP control
 	always_ff@(posedge aclk)
 		if (!aresetn & state != RETURN_RESP0) begin
 			resp_port0.rdata <= '0;
+			//resp_port0_rdata <= '0;
 			resp_port0.resp  <= 0;
 		end else begin
 			resp_port0.rdata <= m_base.rdata;
+			//resp_port0_rdata <= m_base.rdata;
 			resp_port0.resp  <= m_base.resp;
 		end
 			
@@ -230,6 +221,25 @@ module arbiter_controller#(
 		if (!aresetn & state != WAIT_ACK1) begin
 			resp_port1.ack <= 0;
 		end else 
-			resp_port1.ack <= m_base.ack;			
+			resp_port1.ack <= m_base.ack;		
 			
+	/*******************************************************
+	* FIFO control
+	*/	
+	
+	// Read FIFO 0
+	always_ff@(posedge aclk)
+		if (!aresetn | state != SET_RD_REQ0)
+			rd_req_port[0].rd_en <= 0;
+		else 
+			rd_req_port[0].rd_en <= 1;
+			
+	// Read FIFO 1
+	always_ff@(posedge aclk)
+		if (!aresetn | state != SET_RD_REQ1)
+			rd_req_port[1].rd_en <= 0;
+		else 
+			rd_req_port[1].rd_en <= 1;		
+				
+	
 endmodule

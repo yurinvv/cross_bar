@@ -1,2 +1,2 @@
-create_clock -name test_clk -period 5.0 [get_ports aclk]
+create_clock -name test_clk -period 2.5 [get_ports aclk]
              

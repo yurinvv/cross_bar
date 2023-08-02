@@ -8,7 +8,7 @@ class MonitorResp extends Monitor;
 	
 	task run();
 		$display("T=%0t [MonitorResp%d] is starting...", $time, id);
-		//item = new(0);
+		item = new(0);
 		forever begin
 			vif.getRespData(item.data);
 			fifo.put(item);

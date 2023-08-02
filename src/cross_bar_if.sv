@@ -11,7 +11,7 @@ interface cross_bar_if#(
 	logic                  cmd;   // 0 - Read; 1 - Write
 	logic [DWIDTH - 1 : 0] wdata; //
 	logic                  ack;   // 1 - request accepted for execution
-	logic                  rdata; // on next clock after ack
+	logic [DWIDTH - 1 : 0] rdata; // on next clock after ack
 	logic                  resp;  // on next clock after ack
 	
 	modport slave(
@@ -39,6 +39,10 @@ interface cross_bar_if#(
 		{cmd, addr, wdata, req} <= '0;
 	endtask
 	
+	task slaveInit();
+		{ack, rdata, resp} <= '0;
+	endtask
+	
 	task sendRequest(input [AWIDTH - 1 : 0] addr_val, input [DWIDTH - 1 : 0] data_val, input cmd_val);
 		@(posedge aclk);
 		cmd  <= cmd_val;
@@ -51,12 +55,15 @@ interface cross_bar_if#(
 	endtask
 	
 	task getRequest(output [AWIDTH - 1 : 0] addr_val, output [DWIDTH - 1 : 0] data_val, output cmd_val);
+		@(posedge aclk);
 		wait(req);
 		@(posedge aclk);
 		{addr_val, data_val, cmd_val} <= {addr, wdata, cmd};
+		wait(!req);
 	endtask
 	
 	task sendAckRespRdata(input [DWIDTH - 1 : 0] data_val);
+		@(posedge aclk);
 		wait(req);
 		@(posedge aclk);
 		ack <= 1;
@@ -73,10 +80,22 @@ interface cross_bar_if#(
 		wait(resp);
 		@(posedge aclk);
 		rdata_val <= rdata;
+		wait(!resp);
 	endtask
 	
 	task waitOnlyResp();
 		wait(resp);
+		@(posedge aclk);
+		wait(!resp);
+	endtask
+	
+	task sendAck();
+		wait(req);
+		@(posedge aclk);
+		ack <= 1;
+		wait(!req);
+		@(posedge aclk);
+		ack <= 0;
 		@(posedge aclk);
 	endtask
 	

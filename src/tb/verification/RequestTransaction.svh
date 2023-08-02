@@ -9,4 +9,6 @@ class RequestTransaction extends Transaction;
 		this.cmd = cmd;
 	endfunction
 	
+	
+		
 endclass

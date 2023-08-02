@@ -2,15 +2,15 @@ class BaseTest#(string NAME = "Test");
 
 	Environment environment0;
 	
-	string sequence_s0_path;
-	string sequence_s1_path;
-	string sequence_m0_path;
-	string sequence_m1_path;
+	string sequence_s0_path;     //Driver
+	string sequence_s1_path;     //Driver
+	string sequence_m0_path;     //Driver
+	string sequence_m1_path;     //Driver
 	
-	string ref_sequence_s0_path;
-	string ref_sequence_s1_path;
-	string ref_sequence_m0_path;
-	string ref_sequence_m1_path;
+	string ref_sequence_s0_path; //Monitor
+	string ref_sequence_s1_path; //Monitor
+	string ref_sequence_m0_path; //Monitor
+	string ref_sequence_m1_path; //Monitor
 	
 	RequestTransaction   sequence_s0[$];
 	RequestTransaction   sequence_s1[$];
@@ -21,6 +21,8 @@ class BaseTest#(string NAME = "Test");
 	RespDataTransaction  ref_sequence_s1[$];
 	RequestTransaction   ref_sequence_m0[$];
 	RequestTransaction   ref_sequence_m1[$];
+	
+	typedef RequestTransaction reqQueue[$];
 
 	
 	// Method: Read Request sequences. Use in spec test
@@ -44,11 +46,14 @@ class BaseTest#(string NAME = "Test");
 				data = line.substr(9,16);
 				cmd  = line.substr(18,18);
 				
+				req = new(0,0,0);
+				
 				req.addr = addr.atohex();
 				req.data = data.atohex();
 				req.cmd  = cmd.atoi();
 				
 				reqs.push_front(req);
+				
 			end
 			
 			$fclose(fd);
@@ -74,7 +79,11 @@ class BaseTest#(string NAME = "Test");
 					break;
 				
 				data = line.substr(0,7);
+				
+				resp = new(0);
+				
 				resp.data = data.atohex();
+				//$display(">>>>>resp.data = %h", resp.data);
 				resps.push_front(resp);
 			end
 			
@@ -88,6 +97,13 @@ class BaseTest#(string NAME = "Test");
 	endfunction
 	
 	task run();
+	
+		//$display("sequence_s0.size = %d", sequence_s0.size());
+		//$display("sequence_s1.size = %d", sequence_s1.size());
+		//$display("sequence_m0.size = %d", sequence_m0.size());
+		//$display("sequence_m1.size = %d", sequence_m1.size());
+		
+	
 		environment0.agentSlave0.setSequence(sequence_s0);		
 		environment0.agentSlave1.setSequence(sequence_s1);		
 		environment0.agentMaster0.setSequence(sequence_m0);		

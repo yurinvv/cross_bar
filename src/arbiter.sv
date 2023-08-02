@@ -15,7 +15,12 @@ module arbiter#(
 	rd_if.out            resp_port1
 );
 		
-	rd_req_if#(AWIDTH, MATSER_NUM) rd_req_bus [MATSER_NUM - 1 : 0]();
+	rd_req_if#(AWIDTH, MATSER_NUM) rd_req_bus [MATSER_NUM - 1 : 0](aclk);
+	
+	wire [MATSER_NUM - 1:0] push;
+	
+	assign push[0] = rd_req_port[0].wren[ID] ;
+	assign push[1] = rd_req_port[1].wren[ID] ;
 	
 	generate
 		for (genvar i = 0; i < MATSER_NUM; i++)
@@ -26,7 +31,7 @@ module arbiter#(
 				.aresetn   ( aresetn                  ),
 				.push_data ( rd_req_port[i].addr      ),
 				.pop_data  ( rd_req_bus[i].addr       ),
-				.push      ( rd_req_port[i].wren[ID]  ),
+				.push      ( push[i]                  ),
 				.pop       ( rd_req_bus[i].rd_en      ),
 				.not_empty ( rd_req_bus[i].req        ),
 				.full      ( rd_req_port[i].fifo_full )

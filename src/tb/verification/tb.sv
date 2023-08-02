@@ -7,14 +7,8 @@ module tb;
 	/////////////////////////////////////
 	//  Select the Test
 	/////////////////////////////////////
-	DirectWriteTest test;
-	//Test1 test;
-	//Test2 test;
-	//Test3 test;
-	//Test4 test;
-	//Test5 test;
-	//Test6 test;
-	//Test7 test;
+	//DirectWriteTest test;
+	DirectReadTest test;
 	////////////////////////////////////
 	
 	parameter CLOCK_PERIOD = 10;
@@ -95,9 +89,6 @@ module tb;
 		test.environment0.slave1_vif  = slave1_if;
 		test.environment0.master0_vif = master0_if;
 		test.environment0.master1_vif  = master1_if;
-		
-		wait(aresetn);
-		#1000;
 		test.run();
 	end	
 

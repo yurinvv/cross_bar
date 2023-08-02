@@ -15,9 +15,12 @@ class Sequencer;
 		$display("T=%0t [Sequencer%d] is starting", $time, id);
 		
 		while (item.size > 0) begin
+			//$display(">>>>>>>[Sequencer%d]",id);
 			a_item = item.pop_back();
+			//$display("+++++++++[Sequencer%d]",id);			
 			fifo.put(a_item);
 			@(driver_done);
+			//$display("---------[Sequencer%d]",id);	
 		end
 		
 		//-> seqr_done;

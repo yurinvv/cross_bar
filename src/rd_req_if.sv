@@ -5,11 +5,11 @@ interface rd_req_if#(
 	input aclk
 );
 
-	logic                    req;
-	logic [AWIDTH - 1:0]     addr;
-	logic [MATSER_NUM - 1:0] wren; // for fifo
-	logic                    rd_en; // for fifo
-	logic                    fifo_full;
+	logic                    req;  // Empty of FIFO // Arbiter
+	logic [AWIDTH - 1:0]     addr; // to FIFO // Handler
+	logic [MATSER_NUM - 1:0] wren; // to FIFO // Handler
+	logic                    rd_en; // Pop FIFO // Arbiter
+	logic                    fifo_full; // from FIFO // Handler
 	
 	modport slave(
 		input req,

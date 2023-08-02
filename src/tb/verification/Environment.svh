@@ -54,7 +54,16 @@ class Environment;
 			agentSlave1.run();
 			agentMaster0.run();
 			agentMaster1.run();
+			scoreboard0.run();
 		join_none
 	endtask
+	
+	function void setNo_respMaster0();
+		agentMaster0.driver0.no_resp = 1;
+	endfunction
+	
+	function void setNo_respMaster1();
+		agentMaster1.driver0.no_resp = 1;
+	endfunction
 	
 endclass

@@ -9,52 +9,52 @@ module cross_bar#(
 	//cross_bar_if.master  m[1:0]
 
 	input  s00_req    ,
-	input  s00_addr   ,
+	input  [AWIDTH - 1 : 0] s00_addr   ,
 	input  s00_cmd    ,
-	input  s00_wdata  ,
+	input  [DWIDTH - 1 : 0] s00_wdata  ,
 	output s00_ack    ,
-	output s00_rdata  ,
+	output [DWIDTH - 1 : 0] s00_rdata  ,
 	output s00_resp   ,
 
 	input  s01_req    ,
-	input  s01_addr   ,
+	input  [AWIDTH - 1 : 0] s01_addr   ,
 	input  s01_cmd    ,
-	input  s01_wdata  ,
+	input  [DWIDTH - 1 : 0] s01_wdata  ,
 	output s01_ack    ,
-	output s01_rdata  ,
+	output [DWIDTH - 1 : 0] s01_rdata  ,
 	output s01_resp   ,
 
 	output m00_req    ,
-	output m00_addr   ,
+	output [AWIDTH - 1 : 0] m00_addr   ,
 	output m00_cmd    ,
-	output m00_wdata  ,
+	output [DWIDTH - 1 : 0] m00_wdata  ,
 	input  m00_ack    ,
-	input  m00_rdata  ,
+	input  [DWIDTH - 1 : 0] m00_rdata  ,
 	input  m00_resp	  ,
 					  
 	output m01_req    ,
-	output m01_addr   ,
+	output [AWIDTH - 1 : 0] m01_addr   ,
 	output m01_cmd    ,
-	output m01_wdata  ,
+	output [DWIDTH - 1 : 0] m01_wdata  ,
 	input  m01_ack    ,
-	input  m01_rdata  ,
+	input  [DWIDTH - 1 : 0] m01_rdata  ,
 	input  m01_resp   
 );
 	
 	localparam MATSER_NUM = 2; // Private
 	
-	cross_bar_if#(AWIDTH, DWIDTH)   s[MATSER_NUM - 1:0]();
-	cross_bar_if#(AWIDTH, DWIDTH)   m[MATSER_NUM - 1:0]();
+	cross_bar_if#(AWIDTH, DWIDTH)   s[MATSER_NUM - 1:0](aclk, aresetn);
+	cross_bar_if#(AWIDTH, DWIDTH)   m[MATSER_NUM - 1:0](aclk, aresetn);
 	
 	
-	rd_req_if#(AWIDTH, MATSER_NUM)           handle_rd_req_bus   [MATSER_NUM - 1 : 0]();
-	rd_req_if#(AWIDTH, MATSER_NUM)           arbiter_rd_req_bus0 [MATSER_NUM - 1 : 0]();
-	rd_req_if#(AWIDTH, MATSER_NUM)           arbiter_rd_req_bus1 [MATSER_NUM - 1 : 0]();
-	wr_req_if#(AWIDTH, DWIDTH, MATSER_NUM)   handle_wr_req_bus   [MATSER_NUM - 1 : 0]();
-	wr_req_if#(AWIDTH, DWIDTH, MATSER_NUM)   arbiter_wr_req_bus0 [MATSER_NUM - 1 : 0]();
-	wr_req_if#(AWIDTH, DWIDTH, MATSER_NUM)   arbiter_wr_req_bus1 [MATSER_NUM - 1 : 0]();
-	rd_if#(DWIDTH)                           resp0_bus           [MATSER_NUM - 1 : 0]();
-	rd_if#(DWIDTH)                           resp1_bus           [MATSER_NUM - 1 : 0]();
+	rd_req_if#(AWIDTH, MATSER_NUM)           handle_rd_req_bus   [MATSER_NUM - 1 : 0](aclk);
+	rd_req_if#(AWIDTH, MATSER_NUM)           arbiter_rd_req_bus0 [MATSER_NUM - 1 : 0](aclk);
+	rd_req_if#(AWIDTH, MATSER_NUM)           arbiter_rd_req_bus1 [MATSER_NUM - 1 : 0](aclk);
+	wr_req_if#(AWIDTH, DWIDTH, MATSER_NUM)   handle_wr_req_bus   [MATSER_NUM - 1 : 0](aclk);
+	wr_req_if#(AWIDTH, DWIDTH, MATSER_NUM)   arbiter_wr_req_bus0 [MATSER_NUM - 1 : 0](aclk);
+	wr_req_if#(AWIDTH, DWIDTH, MATSER_NUM)   arbiter_wr_req_bus1 [MATSER_NUM - 1 : 0](aclk);
+	rd_if#(DWIDTH)                           resp0_bus           [MATSER_NUM - 1 : 0](aclk);
+	rd_if#(DWIDTH)                           resp1_bus           [MATSER_NUM - 1 : 0](aclk);
 	
 	/**********************************************
 	* Port Handlers
@@ -120,7 +120,7 @@ module cross_bar#(
 		.rd_req_port ( arbiter_rd_req_bus0 ),
 		.wr_req_port ( arbiter_wr_req_bus0 ),
 		.resp_port0  ( resp0_bus[0]        ),
-		.resp_port1  ( resp1_bus[1]        )
+		.resp_port1  ( resp0_bus[1]        )
 	);
 	
 	
@@ -139,7 +139,7 @@ module cross_bar#(
 		.rd_req_port ( arbiter_rd_req_bus1 ),
 		.wr_req_port ( arbiter_wr_req_bus1 ),
 		.resp_port0  ( resp1_bus[0]        ),
-		.resp_port1  ( resp0_bus[1]        )
+		.resp_port1  ( resp1_bus[1]        )
 	);
 	
 	

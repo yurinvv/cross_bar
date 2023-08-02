@@ -14,5 +14,6 @@ package tb_pckg;
 	`include "Environment.svh"
 	`include "BaseTest.svh"
 	`include "DirectWriteTest.svh"
+	`include "DirectReadTest.svh"
 
 endpackage

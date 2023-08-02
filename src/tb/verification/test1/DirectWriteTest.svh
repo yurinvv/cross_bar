@@ -12,11 +12,13 @@ class DirectWriteTest #(string NAME = "DirectWriteTest") extends BaseTest#(.NAME
 		ref_sequence_m0_path = "./dir_wr_seq_m0.txt";
 		ref_sequence_m1_path = "./dir_wr_seq_m1.txt";
 		
-		readReqSequence(sequence_s0_path,     sequence_s0);		
-		readReqSequence(sequence_s1_path,     sequence_s1);		
+		readReqSequence(sequence_s0_path,     sequence_s0    );		
+		readReqSequence(sequence_s1_path,     sequence_s1    );		
 		readReqSequence(ref_sequence_m0_path, ref_sequence_m0);		
 		readReqSequence(ref_sequence_m1_path, ref_sequence_m1);		
 		
+		environment0.setNo_respMaster0();		
+		environment0.setNo_respMaster1();		
 	endfunction
 	
 endclass

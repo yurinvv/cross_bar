@@ -7,7 +7,7 @@ module fifo #(
 	output logic[DWIDTH - 1 : 0] pop_data, // pick read availble
 	input  push,
 	input  pop, // next
-	output logic not_empty,
+	output not_empty,
 	output full
 );
 
@@ -57,7 +57,7 @@ module fifo #(
 			endcase
 		end
 	
-	//assign not_empty = | counter;
+	assign not_empty = | counter;
 	assign full = counter[$clog2(DEPTH)];
 	
 	///////////////////////////////////////
@@ -72,16 +72,7 @@ module fifo #(
 	always_ff @(posedge aclk)
 		if (push & ~full)
 			mem[wr_pointer] <= push_data; 
-	
-	
-	/////////////////////////
-	// not_empty
-		always_ff @(posedge aclk)
-		if (!aresetn)
-			not_empty <= 0;
-		else
-			not_empty = | counter;
-	
+			
 endmodule
 
 

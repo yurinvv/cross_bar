@@ -195,10 +195,12 @@ module arbiter_controller#(
 			
 	// RD0.ACK control
 	always_ff@(posedge aclk)
-		if (!aresetn & state != WAIT_ACK0) begin
+		if (!aresetn) begin
 			resp_port0.ack <= 0;
-		end else 
+		end else if (state == WAIT_ACK0)
 			resp_port0.ack <= m_base.ack;
+		else
+			resp_port0.ack <= 0;
 			
 			
 	/*****************************************************
@@ -218,10 +220,12 @@ module arbiter_controller#(
 			
 	// RD1.ACK control
 	always_ff@(posedge aclk)
-		if (!aresetn & state != WAIT_ACK1) begin
+		if (!aresetn) begin
 			resp_port1.ack <= 0;
-		end else 
-			resp_port1.ack <= m_base.ack;		
+		end else if (state == WAIT_ACK1)
+			resp_port1.ack <= m_base.ack;
+		else	
+			resp_port1.ack <= 0;
 			
 	/*******************************************************
 	* FIFO control

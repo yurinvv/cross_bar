@@ -8,7 +8,13 @@ module tb;
 	//  Select the Test
 	/////////////////////////////////////
 	//DirectWriteTest test;
-	DirectReadTest test;
+	//DirectReadTest test;
+	//CrossWriteTest test;
+	//CrossReadTest test;
+	//ArbitrReadTest0 test;
+	//ArbitrReadTest1 test;
+	//ArbitrWriteTest0 test;
+	ArbitrWriteTest1 test;
 	////////////////////////////////////
 	
 	parameter CLOCK_PERIOD = 10;

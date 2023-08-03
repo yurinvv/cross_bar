@@ -1,16 +1,16 @@
-class DirectReadTest #(string NAME = "Direct reading test") extends BaseTest#(.NAME(NAME));
+class CrossReadTest #(string NAME = "Cross reading test") extends BaseTest#(.NAME(NAME));
 	
 	function new();
 		super.new();
-		sequence_s0_path = "./dir_req_seq_s0.txt";
-		sequence_s1_path = "./dir_req_seq_s1.txt";
-		sequence_m0_path = "./dir_resp_seq_m0.txt";
-		sequence_m1_path = "./dir_resp_seq_m1.txt";
+		sequence_s0_path = "./cross_rd_req_seq_s0.txt";
+		sequence_s1_path = "./cross_rd_req_seq_s1.txt";
+		sequence_m0_path = "./cross_rd_resp_seq_m0.txt";
+		sequence_m1_path = "./cross_rd_resp_seq_m1.txt";
 
-		ref_sequence_s0_path = "./dir_resp_seq_s0.txt";
-		ref_sequence_s1_path = "./dir_resp_seq_s1.txt";
-		ref_sequence_m0_path = "./dir_req_seq_m0.txt";
-		ref_sequence_m1_path = "./dir_req_seq_m1.txt";
+		ref_sequence_s0_path = "./cross_rd_resp_seq_s0.txt";
+		ref_sequence_s1_path = "./cross_rd_resp_seq_s1.txt";
+		ref_sequence_m0_path = "./cross_rd_req_seq_m0.txt";
+		ref_sequence_m1_path = "./cross_rd_req_seq_m1.txt";
 		
 		readReqSequence(sequence_s0_path,     sequence_s0    );		
 		readReqSequence(sequence_s1_path,     sequence_s1    );		

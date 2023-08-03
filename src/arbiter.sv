@@ -49,8 +49,8 @@ module arbiter#(
 		
 		.rd_req_port  (rd_req_bus  ),
 		.wr_req_port  (wr_req_port ),
-		.resp_port0     (resp_port0    ),
-		.resp_port1     (resp_port1    )
+		.resp_port0   (resp_port0    ),
+		.resp_port1   (resp_port1    )
 	);	
 	
 endmodule

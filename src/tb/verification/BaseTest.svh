@@ -98,10 +98,14 @@ class BaseTest#(string NAME = "Test");
 	
 	task run();
 	
-		//$display("sequence_s0.size = %d", sequence_s0.size());
-		//$display("sequence_s1.size = %d", sequence_s1.size());
-		//$display("sequence_m0.size = %d", sequence_m0.size());
-		//$display("sequence_m1.size = %d", sequence_m1.size());
+		$display("sequence_s0.size = %d", sequence_s0.size());
+		$display("sequence_s1.size = %d", sequence_s1.size());
+		$display("sequence_m0.size = %d", sequence_m0.size());
+		$display("sequence_m1.size = %d", sequence_m1.size());
+		$display("ref_sequence_m0.size = %d", ref_sequence_m0.size());
+		$display("ref_sequence_m1.size = %d", ref_sequence_m1.size());
+		$display("ref_sequence_s0.size = %d", ref_sequence_s0.size());
+		$display("ref_sequence_s1.size = %d", ref_sequence_s1.size());
 		
 	
 		environment0.agentSlave0.setSequence(sequence_s0);		
@@ -114,7 +118,10 @@ class BaseTest#(string NAME = "Test");
 		environment0.scoreboard0.refMonitorRespFifo0 = ref_sequence_s0;
 		environment0.scoreboard0.refMonitorRespFifo1 = ref_sequence_s1;
 				
+		$display("#########################################");
 		$display("T=%0t Test %s is starting...", $time, NAME);
+		$display("#########################################");
+		$display("");
 		environment0.run();
 	endtask
 		

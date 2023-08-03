@@ -15,5 +15,11 @@ package tb_pckg;
 	`include "BaseTest.svh"
 	`include "DirectWriteTest.svh"
 	`include "DirectReadTest.svh"
+	`include "CrossWriteTest.svh"
+	`include "CrossReadTest.svh"
+	`include "ArbitrReadTest0.svh"
+	`include "ArbitrReadTest1.svh"
+	`include "ArbitrWriteTest0.svh"
+	`include "ArbitrWriteTest1.svh"
 
 endpackage

@@ -1,4 +1,4 @@
-class DirectWriteTest #(string NAME = "DirectWriteTest") extends BaseTest#(.NAME(NAME));
+class DirectWriteTest #(string NAME = "Direct writing test") extends BaseTest#(.NAME(NAME));
 	
 	function new();
 		super.new();

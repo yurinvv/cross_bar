@@ -11,9 +11,10 @@ class DriverReq extends Driver;
 		vif.mastertInit();
 		forever begin
 			fifo.get(reqData);
+			$display("[DriverReq%d] ------", id);
 			vif.sendRequest(reqData.addr, reqData.data, reqData.cmd);
 						
-			//$display("T=%0t [DriverReq%d] sended next: addr %h, data %h, cmd %h", $time, id, reqData.addr, reqData.data, reqData.cmd);
+			$display("T=%0t [DriverReq%d] sended next: addr %h, data %h, cmd %h", $time, id, reqData.addr, reqData.data, reqData.cmd);
 			if (reqData.cmd == 0) // Read ?
 				vif.waitOnlyResp();
 			-> driver_done;

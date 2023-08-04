@@ -1,0 +1,3 @@
+virtual class Transaction;
+
+endclass

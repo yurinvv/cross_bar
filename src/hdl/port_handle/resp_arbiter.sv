@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Module Name: Separate Arbiter
+// Project Name: Cross Bar
+// Description: This module is used to arbitrate responce transactions from master ports to 
+// the slave port according to the Round- Robin algorithm
+//////////////////////////////////////////////////////////////////////////////////
 module resp_arbiter#(
 	parameter AWIDTH = 32,
 	parameter DWIDTH = 32,

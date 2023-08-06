@@ -1,3 +1,12 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Module Name: Read Request Counter
+// Project Name: Cross Bar
+// Description: This counter is used to implement the functionality of enabling 
+// and disabling of the reception of responses from two ports of the master.
+// If the responses received from the master are less than the number of read 
+// requests sent to this master from this slave port, then the transfer of 
+// responses from the master to the slave is enabled. Otherwise, disabled
+//////////////////////////////////////////////////////////////////////////////////
 module rd_req_counter#(
 	parameter MASTER_ID = 0,
 	parameter CNT_WIDTH = 8

@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Module Name: Read Request Switch
+// Project Name: Cross Bar
+// Description: This module is used to switch between one slave and two master 
+// Read Request interface ports
+//////////////////////////////////////////////////////////////////////////////////
 module rd_req_switch#(
 	parameter AWIDTH = 32,
 	parameter MATSER_NUM = 2 // number of base master ports from cross-bar
@@ -9,6 +15,8 @@ module rd_req_switch#(
 	
 	localparam M0 = 1'b0,
 			   M1 = 1'b1;
+			   
+	// SELECT SIGNAL
     wire sel = s0_rd_req_port.addr[AWIDTH-1];
 		
 	always_comb begin

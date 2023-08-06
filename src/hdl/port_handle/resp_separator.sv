@@ -1,3 +1,5 @@
+// Just to combine counters. 
+// The contents of this module can be moved to the arbiter
 module resp_separator#(
 	parameter MATSER_NUM = 2
 )(

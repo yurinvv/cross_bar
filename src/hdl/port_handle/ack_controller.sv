@@ -1,3 +1,12 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Module Name: Ack Controller
+// Project Name: Cross Bar
+// Description: This module controls the ack signal.
+// When a read request comes in, the controller generates a ack signal if the FIFO
+// is not full.
+// When a write request comes in, the controller send a ack signal from the base 
+// interface master port to slave port.
+//////////////////////////////////////////////////////////////////////////////////
 module ack_controller#(
 	parameter AWIDTH = 32,
 	parameter DWIDTH = 32

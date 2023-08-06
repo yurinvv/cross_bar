@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Interface Name: Write Request interface
+// Project Name: Cross Bar
+// Description: This interface is used to transmit write requests received on the 
+// slave port of the Base interface.
+//////////////////////////////////////////////////////////////////////////////////
 interface wr_req_if#(
 	parameter AWIDTH = 32,
 	parameter DWIDTH = 32,
@@ -27,10 +33,10 @@ interface wr_req_if#(
 	);
 	
 	task busReset();
-		sel   <= '0;
-		addr  <= '0;
-		wdata <= '0;
-		req   <= '0;
+		sel   = '0;
+		addr  = '0;
+		wdata = '0;
+		req   = '0;
 	endtask
 	
 endinterface

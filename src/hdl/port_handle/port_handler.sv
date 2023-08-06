@@ -1,3 +1,10 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Module Name: Port Handler
+// Project Name: Cross Bar
+// Description: This module separates requests from the base interface into 
+// separate interfaces, routes requests and responses between the slave port and
+// two master ports
+//////////////////////////////////////////////////////////////////////////////////
 module port_handler#(
 	parameter AWIDTH = 32,
 	parameter DWIDTH = 32,

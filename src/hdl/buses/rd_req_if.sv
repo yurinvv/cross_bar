@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Interface Name: Read Request interface
+// Project Name: Cross Bar
+// Description: This interface is used to transmit read requests received on the 
+// slave port of the Base interface.
+//////////////////////////////////////////////////////////////////////////////////
 interface rd_req_if#(
 	parameter AWIDTH = 32,
 	parameter MATSER_NUM = 2 // number of base master ports from cross-bar
@@ -28,9 +34,9 @@ interface rd_req_if#(
 	);
 
 	task masterReset();
-		req   <= '0;
-		addr  <= '0;
-		wren  <= '0;
+		req   = '0;
+		addr  = '0;
+		wren  = '0;
 	endtask
 
 endinterface

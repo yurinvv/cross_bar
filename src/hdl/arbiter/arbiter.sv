@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Module Name: Arbiter
+// Project Name: Cross Bar
+// Description: This module is used to arbitrate request transactions from slave ports to 
+// the master port according to the Round-Robin algorithm
+//////////////////////////////////////////////////////////////////////////////////
 module arbiter#(
 	parameter AWIDTH     = 32, // Public
 	parameter DWIDTH     = 32,  // Public
@@ -22,6 +28,8 @@ module arbiter#(
 	assign push[0] = rd_req_port[0].wren[ID] ;
 	assign push[1] = rd_req_port[1].wren[ID] ;
 	
+	
+	// Fifo bufers for Read transactions
 	generate
 		for (genvar i = 0; i < MATSER_NUM; i++)
 			fifo #(

@@ -1,3 +1,10 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Module Name: Write Request Switch
+// Project Name: Cross Bar
+// Description: This module is used to switch between one slave and two master 
+// Write Request interface ports
+//////////////////////////////////////////////////////////////////////////////////
+
 module wr_req_switch(
 	wr_req_if.in   i_wr_req_port0,
 	wr_req_if.out  o_wr_req_port0,

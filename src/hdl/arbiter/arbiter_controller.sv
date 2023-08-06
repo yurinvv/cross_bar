@@ -1,3 +1,9 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Module Name: Arbiter Controller
+// Project Name: Cross Bar
+// Description: This module directly controls and arbitrates transactions in the
+// arbiter module
+//////////////////////////////////////////////////////////////////////////////////
 module arbiter_controller#(
 	parameter MATSER_NUM = 2
 )(
@@ -184,7 +190,6 @@ module arbiter_controller#(
 			resp_port0.resp  <= 0;
 		end else begin
 			resp_port0.rdata <= m_base.rdata;
-			//resp_port0_rdata <= m_base.rdata;
 			resp_port0.resp  <= m_base.resp;
 		end
 			
